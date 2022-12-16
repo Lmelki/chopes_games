@@ -7,7 +7,7 @@
                         <br>
                             <h3 class="text-center text-primary"><?php echo $TitreDeLaPage ?></h3>
                             <?php if($TitreDeLaPage=='Corriger votre formulaire') { 
-                                if ($validation->hasError('txtEmail')||$validation->hasError('txtMdp')) {
+                                if (service('validation')->hasError('txtEmail')||service('validation')->hasError('txtMdp')) {
                                     echo "Identifiants incorrects";
                                 }
                                 } ?>

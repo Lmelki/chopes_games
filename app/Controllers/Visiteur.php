@@ -210,7 +210,6 @@ class Visiteur extends BaseController
     {
 
         helper(['form']);
-        $validation =  \Config\Services::validation();
         $data['TitreDeLaPage'] = "S'enregister";
         $session = session();
 
@@ -253,9 +252,7 @@ class Visiteur extends BaseController
                 'required' => 'Un mot de passe est requis',
             ]
         ];
-        $modelCat = new ModeleCategorie();
-        $data_bis['categories'] = $modelCat->retourner_categories();
-        echo view('templates/header', $data_bis);
+        
         $modelCli = new ModeleClient();
 
         if (!$this->validate($rules, $messages)) {
@@ -284,6 +281,7 @@ class Visiteur extends BaseController
                 'VILLE' => $this->request->getPost('txtVille'),
                 'CODEPOSTAL' => $this->request->getPost('txtCP'),
                 'EMAIL' => $this->request->getPost('txtEmail'),
+                //'MOTDEPASSE' => password_hash($this->request->getPost('txtMdp'), PASSWORD_DEFAULT),
                 'MOTDEPASSE' => $this->request->getPost('txtMdp')
             ];
 
@@ -297,42 +295,26 @@ class Visiteur extends BaseController
                 else $data['TitreDeLaPage'] = "Sorry";
             }
         }
-        echo view('visiteur/s_enregistrer', $data);
-        echo view('templates/footer');
+        $modelCat = new ModeleCategorie();
+        $data['categories'] = $modelCat->retourner_categories();
+        return view('templates/header', $data)
+        .view('visiteur/s_enregistrer')
+        .view('templates/footer');
     }
 
     public function se_connecter()
     {
         helper(['form']);
-        //$validation =  \Config\Services::validation();
         $session = session();
-        $data['TitreDeLaPage'] = 'Se connecter';
         $rules = [ //régles de validation
             'txtEmail' => 'required|valid_email|is_not_unique[client.EMAIL,id,{id}]',
             'txtMdp'   => 'required|is_not_unique[client.MOTDEPASSE,id,{id}]'
         ];
-
-        $errors = [ //message à renvoyer en cas de non respect des règles de validation
-            'txtEmail' => [
-                'required' => 'Un Email est requis',
-                'valid_email' => 'Un Email valide est requis',
-                'is_not_unique' => 'Adresse E-mail incorrecte',
-            ],
-            'txtMdp'    => [
-                'required' => 'Un mot de passe est requis',
-                'is_not_unique' => 'Mot de passe incorrect',
-            ]
-        ];
-        $modelCat = new ModeleCategorie();
-        $data_bis['categories'] = $modelCat->retourner_categories();
-        echo view('templates/header', $data_bis);
         if (!$this->validate($rules)) {
-            if ($_POST) { //if ($this->request->getMethod()=='post') // si c'est une tentative d'enregistrement
+            if ($this->request->getMethod()=='post') { // si c'est une tentative d'enregistrement
                 $data['TitreDeLaPage'] = "Corriger votre formulaire";
-                $data['validation'] = $this->validator; 
             }
             else   $data['TitreDeLaPage'] = "Se connecter";
-            echo view('visiteur/se_connecter', $data); // sinon premier affichage
         } else {
             $modelCli = new ModeleClient();
             $Identifiant = esc($this->request->getPost('txtEmail'));
@@ -350,16 +332,16 @@ class Visiteur extends BaseController
                     $session->set('id', $UtilisateurRetourne["NOCLIENT"]);
                     $session->set('statut', 1);
                     return redirect()->to('Visiteur/accueil');
-                } else {
-                    $data['TitreDeLaPage'] = 'Mot de passe incorrect';
-                    echo view('visiteur/se_connecter', $data);
-                }
-            } else {
-                $data['TitreDeLaPage'] = 'Adresse E-mail incorrecte';
-                echo view('visiteur/se_connecter', $data);
-            }
+                } 
+            } 
         }
-        echo view('templates/footer');
+        
+        $modelCat = new ModeleCategorie();
+        $data['categories'] = $modelCat->retourner_categories();
+        
+        return view('templates/header', $data)
+        .view('visiteur/se_connecter')
+        .view('templates/footer');
     }
 
     public function connexion_administrateur()
