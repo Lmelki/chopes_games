@@ -25,6 +25,7 @@ class App extends BaseConfig
      * @var string
      */
     public $baseURL = 'http://localhost:8080/';
+    //public $baseURL = 'https://alban.greta22sio.fr/CI421/public/';
 
     /**
      * --------------------------------------------------------------------------

@@ -23,9 +23,9 @@ class Visiteur extends BaseController
         $modelMarq = new ModeleMarque();
         $data['marques'] = $modelMarq->retourner_marques();
 
-        echo view('templates/header', $data);
-        echo view('visiteur/accueil');
-        echo view('templates/footer');
+        return view('templates/header', $data)
+        .view('visiteur/accueil')
+        .view('templates/footer');
     }
 
 
@@ -47,9 +47,9 @@ class Visiteur extends BaseController
         $modelMarq = new ModeleMarque();
         $data['marques'] = $modelMarq->retourner_marques();
 
-        echo view('templates/header', $data);
-        echo view("visiteur/lister_les_produits");
-        echo view('templates/footer');
+        return view('templates/header', $data)
+        .view("visiteur/lister_les_produits")
+        .view('templates/footer');
     }
 
     public function lister_les_produits_parmarque($nomarque = false)
@@ -70,9 +70,9 @@ class Visiteur extends BaseController
             $data["lesProduits"] = $modelProd->retouner_produits_marque($nomarque)->paginate(12);
             $data['pager'] = $modelProd->pager;
             
-            echo view('templates/header', $data);
-            echo view("visiteur/lister_les_produits");
-            echo view('templates/footer');
+            return view('templates/header', $data)
+            .view("visiteur/lister_les_produits")
+            .view('templates/footer');
         }
     }
 
@@ -93,9 +93,9 @@ class Visiteur extends BaseController
             $data["lesProduits"] = $modelProd->retouner_produits_categorie($nocategorie)->paginate(12);
             $data['pager'] = $modelProd->pager;
      
-      echo view('templates/header', $data);
-      echo view("visiteur/lister_les_produits");
-      echo view('templates/footer');
+      return view('templates/header', $data)
+      .view("visiteur/lister_les_produits")
+      .view('templates/footer');
       } 
    }
 
@@ -104,7 +104,7 @@ class Visiteur extends BaseController
         $modelProd = new ModeleProduit();
         $data["unProduit"] = $modelProd->retourner_produits($noProduit);
         if (empty($data['unProduit'])) {
-            //echo view('error404');
+            //return view('error404');
             //throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Page inconue');
         }
@@ -120,9 +120,9 @@ class Visiteur extends BaseController
         $modelMarq = new ModeleMarque();
         $data['marque'] = $modelMarq->retourner_marques($marque);
 
-        echo view('templates/header', $data);
-        echo view('visiteur/voir_un_produit');
-        echo view('templates/footer');
+        return view('templates/header', $data)
+        .view('visiteur/voir_un_produit')
+        .view('templates/footer');
     }
 
     public function ajouter_au_panier($noProduit)
@@ -174,9 +174,9 @@ class Visiteur extends BaseController
         if ($session->has('cart'))
             $data['items'] = array_values(session('cart'));
         else $data['items'] = array();
-        echo view('templates/header', $data);
-        echo view('visiteur/afficher_panier');
-        echo view('templates/footer');
+        return view('templates/header', $data)
+        .view('visiteur/afficher_panier')
+        .view('templates/footer');
     }
 
     function suppression_item_panier($id = '')
@@ -327,7 +327,7 @@ class Visiteur extends BaseController
                 // PAS D'ENCODAGE DU MOT DE PASSE POUR FACILITATION OPERATIONS DE TESTS (ENCODAGE A FAIRE EN PRODUCTION!)
                 if ($MdP == $UtilisateurRetourne["MOTDEPASSE"]) {
                     if (!empty($session->get('statut'))) {
-                        unset($_SESSION['cart']);
+                        $session->remove('cart');
                     }
                     $session->set('id', $UtilisateurRetourne["NOCLIENT"]);
                     $session->set('statut', 1);
@@ -346,31 +346,17 @@ class Visiteur extends BaseController
 
     public function connexion_administrateur()
     {
-        helper(['form']);
-        $validation =  \Config\Services::validation();
         $session = session();
 
         $rules = [ //régles de validation
             'txtIdentifiant' => 'required',
             'txtMotDePasse'   => 'required'
         ];
-        $messages = [ //message à renvoyer en cas de non respect des règles de validation
-            'txtIdentifiant' => [
-                'required' => 'Un identifiant est requis',
-            ],
-            'txtMotDePasse'    => [
-                'required' => 'Un mot de passe est requis',
-            ]
-        ];
-
-        $modelCat = new ModeleCategorie();
-        $data_bis['categories'] = $modelCat->retourner_categories();
-        echo view('templates/header', $data_bis);
-        if (!$this->validate($rules, $messages)) {
-            if ($_POST) //if ($this->request->getMethod()=='post') // si c'est une tentative d'enregistrement // erreur IDE !!
+       
+        if (!$this->validate($rules)) {
+            if ($this->request->getMethod()=='post') // si c'est une tentative d'enregistrement
                 $data['TitreDeLaPage'] = "Corriger votre formulaire";
             else   $data['TitreDeLaPage'] = "Se connecter";
-            echo view('visiteur/connexion_administrateur', $data); // sinon premier affichage
 
         } else { //validation ok
             $modelAdm = new ModeleAdministrateur();
@@ -393,15 +379,14 @@ class Visiteur extends BaseController
                         $session->set('statut', 3);
                     }
                     return redirect()->to('Visiteur/accueil');
-                } else {
-                    $data['TitreDeLaPage'] = 'Mot de passe incorrect';
-                    echo view('visiteur/connexion_administrateur', $data);
-                }
-            } else {
-                $data['TitreDeLaPage'] = 'Identifiant incorrecte';
-                echo view('visiteur/connexion_administrateur', $data);
+                } 
             }
-            echo view('templates/footer');
         }
+        $modelCat = new ModeleCategorie();
+        $data['categories'] = $modelCat->retourner_categories();
+        return view('templates/header', $data)
+        .view('visiteur/connexion_administrateur')
+        .view('templates/footer');
+        
     }
 }

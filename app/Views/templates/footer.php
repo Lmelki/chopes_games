@@ -1,13 +1,14 @@
 </main>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-<div class='container-fluid '>
+<div class='container-fluid text-info'>
 
         	<div class="col-md-3 col-sm-6">
-            	<img class="navbar-brand" style="height:64px;" src="<?= base_url().'/assets/images/logo.jpg'?>" alt="Logo">
+            	<img class="navbar-brand" height="60" src="<?php  echo base_url('/assets/images/logo.jpg') ?>" alt="ChopeGames">
                 <a href="<?php echo site_url('Visiteur/flux_rss') ?>">
-                <img class="navbar-brand" style="height:60px;" src="<?= base_url().'/assets/images/rss.png'?>" width="60">
+                <img class="navbar-brand" height="60" src="<?php  echo base_url('/assets/images/rss.png') ?>" alt="RSS" >
                 </a>
-                <BR>© Adrien Lorin, 2020 - D. Boucard and co
+                <p class="small">© Adrien Lorin, 2020 - D. Boucard and co</p>
+             
             </div>
         	<div class="col-md-3 col-sm-6">
             	<h4>Nous contacter</h4>
@@ -28,6 +29,7 @@
         
         </div>
 </nav>
+<link rel="stylesheet" href="<?php  echo css_url('bootstrap.min') ?>">
 </body>
 
 </html>
