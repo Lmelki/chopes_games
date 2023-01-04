@@ -78,7 +78,7 @@ if ($session->has('cart')) {
 
                 <?php if ($session->get('statut') == 2 or $session->get('statut') == 3) : ?>
                     <li class="nav-item dropdown">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             Administration
                         </button>
                         <div class="dropdown-menu">
@@ -102,7 +102,7 @@ if ($session->has('cart')) {
                                 <a class="dropdown-item" href="<?php echo site_url('Client/historique_des_commandes') ?>">Mes commandes</a>
                                 <a class="dropdown-item" href="<?php echo site_url('Visiteur/s_enregistrer') ?>">Modifier son compte</a>
                             <?php } elseif ($session->get('statut') == 3) { ?>
-                                <li><a class="dropdown-item" href="?>">(2Do) Modifier son compte</a></li>
+                                <a class="dropdown-item" href="?>">(2Do) Modifier son compte</a>
                             <?php } ?>
                             <a class="dropdown-item" href="<?php echo site_url('Client/se_de_connecter') ?>">Se déconnecter</a>
                         <?php } else { ?>
