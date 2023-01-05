@@ -305,16 +305,16 @@ class Visiteur extends BaseController
     public function se_connecter()
     {
         helper(['form']);
+        $data['TitreDeLaPage'] = "Corriger votre formulaire";
         $session = session();
         $rules = [ //régles de validation
             'txtEmail' => 'required|valid_email|is_not_unique[client.EMAIL,id,{id}]',
             'txtMdp'   => 'required|is_not_unique[client.MOTDEPASSE,id,{id}]'
         ];
         if (!$this->validate($rules)) {
-            if ($this->request->getMethod()=='post') { // si c'est une tentative d'enregistrement
-                $data['TitreDeLaPage'] = "Corriger votre formulaire";
-            }
-            else   $data['TitreDeLaPage'] = "Se connecter";
+            if(!$this->request->getPost()) { // si c'est une tentative d'enregistrement
+                $data['TitreDeLaPage'] = "Se connecter";  
+            } 
         } else {
             $modelCli = new ModeleClient();
             $Identifiant = esc($this->request->getPost('txtEmail'));
@@ -347,16 +347,16 @@ class Visiteur extends BaseController
     public function connexion_administrateur()
     {
         $session = session();
-
+        $data['TitreDeLaPage'] = "Corriger votre formulaire";
+        
         $rules = [ //régles de validation
-            'txtIdentifiant' => 'required',
-            'txtMotDePasse'   => 'required'
+            'txtIdentifiant' => 'required|is_not_unique[administrateur.IDENTIFIANT,id,{id}]',
+            'txtMotDePasse'   => 'required|is_not_unique[administrateur.MOTDEPASSE,id,{id}]'
         ];
        
         if (!$this->validate($rules)) {
-            if ($this->request->getMethod()=='post') // si c'est une tentative d'enregistrement
-                $data['TitreDeLaPage'] = "Corriger votre formulaire";
-            else   $data['TitreDeLaPage'] = "Se connecter";
+            if(!$this->request->getPost()) // si c'est une tentative d'enregistrement
+              {  $data['TitreDeLaPage'] = "Se connecter";   }
 
         } else { //validation ok
             $modelAdm = new ModeleAdministrateur();
