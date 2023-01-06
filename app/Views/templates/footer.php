@@ -29,7 +29,7 @@
         
         </div>
 </nav>
-<link rel="stylesheet" href="<?php  echo css_url('bootstrap.min') ?>">
+<script src="<?php  echo js_url('bootstrap.bundle.min') ?>"></script>
 </body>
 
 </html>
