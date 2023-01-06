@@ -29,7 +29,7 @@ class ModeleProduit extends Model
 
     public function produits_search($match)
     {
-        return $this->like('LIBELLE', $match, 'both');
+        return $this->select('NOPRODUIT, LIBELLE, NOMIMAGE, VITRINE, PRIXHT, TAUXTVA, DISPONIBLE' )->like('LIBELLE', $match, 'both');
     }
 
     public function inserer_un_produit($pDonneesAInserer)
@@ -45,5 +45,10 @@ class ModeleProduit extends Model
     public function retouner_produits_categorie($categorie)
     {
         return $this->where(['NOCATEGORIE' => $categorie]);
+    }
+
+    public function retouner_produits_pagination()
+    {
+        return $this->select('NOPRODUIT, LIBELLE, NOMIMAGE, VITRINE, PRIXHT, TAUXTVA, DISPONIBLE' );
     }
 }

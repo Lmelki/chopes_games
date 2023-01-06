@@ -22,13 +22,14 @@ if ($session->has('cart')) {
 
 <body>
     
-    <nav class="navbar navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-expand-lg light-blue lighten-4">
     <div class="container-fluid">
+        <!-- Navbar brand -->
             <a class="navbar-brand" href="<?php echo site_url('Visiteur/accueil') ?>">
                 <img width="60" height="38" src="<?php  echo base_url('/assets/images/logo.jpg')  ?>" alt="Logo">
             </a>
-    
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2" aria-controls=".dual-collapse2" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Collapse button -->
+            <button class="navbar-toggler toggler-example" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2" aria-controls=".dual-collapse2" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
       
