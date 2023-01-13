@@ -24,7 +24,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost:8080/';
+    public $baseURL = 'https://melki.greta22sio.fr/ChopesGames-CI-4.2.10/public';
     //public $baseURL = 'https://alban.greta22sio.fr/CI421/public/';
 
     /**
@@ -38,7 +38,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $indexPage = 'index.php';
+    public $indexPage = '';
 
     /**
      * --------------------------------------------------------------------------

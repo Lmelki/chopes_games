@@ -1,5 +1,5 @@
 </main>
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar bg-dark navbar-dark">
 <div class='container-fluid text-info'>
 
         	<div class="col-md-3 col-sm-6">

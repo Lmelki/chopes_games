@@ -386,7 +386,25 @@ class Visiteur extends BaseController
         $data['categories'] = $modelCat->retourner_categories();
         return view('templates/header', $data)
         .view('visiteur/connexion_administrateur')
-        .view('templates/footer');
-        
+        .view('templates/footer'); 
     }
+    public function prodById(int $id){
+        $modelProd = new ModeleProduit();
+        $slug= $modelProd->retournerSlug($id);
+    //redirection   
+        if ($slug != null){ 
+        return redirect()->to('game/'.$slug['NOM'].'/'.$slug['NOMIMAGE']);
+        }
+    //else redirect 404 adaptée ?
+      }
+      
+    public function prodBySlug($slug){
+        $modelProd = new ModeleProduit();
+        $id= $modelProd->retournerId($slug);
+    //pas de redirection mais invocation de la méthode déjà programmée     
+        if ($id != null){ 
+        return $this->voir_un_produit($id);
+        }
+    //else redirect 404 adaptée ?
+      }
 }

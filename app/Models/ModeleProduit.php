@@ -51,4 +51,13 @@ class ModeleProduit extends Model
     {
         return $this->select('NOPRODUIT, LIBELLE, NOMIMAGE, VITRINE, PRIXHT, TAUXTVA, DISPONIBLE' );
     }
+    public function retournerSlug($id)
+    {
+    return $this->select('NOMIMAGE, NOM')->where(['NOPRODUIT' => $id])->join('marque', 'produit.nomarque = marque.nomarque')->first();
+    }
+    public function retournerId($slug)
+    {
+    return $this->select('NOPRODUIT')->where(['NOMIMAGE' => $slug])->first();
+    }
+
 }
